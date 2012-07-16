@@ -56,12 +56,12 @@ func Realpath(filepath string) (string, error) {
           fmt.Printf("SYMLINK -> %s\n", dst)
 
           rest := string(path[len(c):])
-          if dst[0] == '/' {
+          if dst[0] == os.PathSeparator {
             // Absolute links
-            path  = []byte(dst + "/" + rest)
+            path  = []byte(dst + sepStr + rest)
           } else {
             // Relative links
-            path  = []byte(string(path[0:start])+dst+"/"+rest)
+            path  = []byte(string(path[0:start])+dst+sepStr+rest)
           }
           prev  = 1
           start = 1
@@ -73,13 +73,13 @@ func Realpath(filepath string) (string, error) {
     }
   }
 
-  for len(path)>1 && path[len(path)-1]=='/' { path = path[0:len(path)-1] }
+  for len(path)>1 && path[len(path)-1]==os.PathSeparator { path = path[0:len(path)-1] }
   return string(path), nil
 
 }
 
 func nextComponent(path []byte, start int) []byte {
-  v := bytes.IndexByte(path[start:], '/')
+  v := bytes.IndexByte(path[start:], os.PathSeparator)
   if v < 0 { return path }
   return path[0 : start+v]
 }
