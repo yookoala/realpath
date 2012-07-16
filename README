@@ -1,0 +1,13 @@
+This is a implementation of realpath() function in Go.
+
+The original version is created by Taru Karttunen in golang-nuts group:
+https://groups.google.com/forum/?fromgroups#!topic/golang-nuts/htns6YWMp7s
+
+Sample usage:
+
+  import "realpath"
+
+  func main() {
+    myRealpath, err := realpath.Realpath("/some/path")
+  }
+
