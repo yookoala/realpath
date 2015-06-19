@@ -15,7 +15,6 @@ package realpath
 
 import (
 	"bytes"
-	"fmt"
 	"os"
 	"path/filepath"
 )
@@ -76,7 +75,6 @@ func Realpath(fpath string) (string, error) {
 
 				var dst string
 				dst, err = os.Readlink(string(c))
-				fmt.Printf("SYMLINK -> %s\n", dst)
 
 				rest := string(path[len(c):])
 				if dst[0] == os.PathSeparator {
