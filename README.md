@@ -1,6 +1,8 @@
 realpath
 ========
 
+![Travis last test result on master](https://api.travis-ci.org/yookoala/realpath.svg?branch=master "Travis last test result on master")
+
 This is a implementation of realpath() function in Go (golang).
 
 If you provide it with a valid relative path / alias path, it will return you
