@@ -17,26 +17,25 @@ import (
 	"bytes"
 	"fmt"
 	"os"
+	"path/filepath"
 )
 
 // Realpath returns the real path of a given file in the os
-func Realpath(filepath string) (string, error) {
+func Realpath(fpath string) (string, error) {
 
-	if len(filepath) == 0 {
+	if len(fpath) == 0 {
 		return "", os.ErrInvalid
 	}
 
-	sepStr := string(os.PathSeparator)
-
-	if filepath[0] != os.PathSeparator {
+	if fpath[0] != os.PathSeparator {
 		pwd, err := os.Getwd()
 		if err != nil {
 			return "", err
 		}
-		filepath = pwd + sepStr + filepath
+		fpath = filepath.Join(pwd, fpath)
 	}
 
-	path := []byte(filepath)
+	path := []byte(fpath)
 	nlinks := 0
 	start := 1
 	prev := 1
@@ -82,10 +81,10 @@ func Realpath(filepath string) (string, error) {
 				rest := string(path[len(c):])
 				if dst[0] == os.PathSeparator {
 					// Absolute links
-					path = []byte(dst + sepStr + rest)
+					path = []byte(filepath.Join(dst, rest))
 				} else {
 					// Relative links
-					path = []byte(string(path[0:start]) + dst + sepStr + rest)
+					path = []byte(string(path[0:start]) + filepath.Join(dst, rest))
 				}
 				prev = 1
 				start = 1
