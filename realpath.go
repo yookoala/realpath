@@ -66,24 +66,20 @@ func Realpath(fpath string) (string, error) {
 			if err != nil {
 				return "", err
 			}
-			if fi.Mode()&os.ModeSymlink == os.ModeSymlink {
+			if isSymlink(fi) {
 
 				nlinks++
 				if nlinks > 16 {
 					return "", os.ErrInvalid
 				}
 
-				var dst string
-				dst, err = os.Readlink(string(c))
+				var link string
+				link, err = os.Readlink(string(c))
+				after := string(path[len(c):])
 
-				rest := string(path[len(c):])
-				if dst[0] == os.PathSeparator {
-					// Absolute links
-					path = []byte(filepath.Join(dst, rest))
-				} else {
-					// Relative links
-					path = []byte(string(path[0:start]) + filepath.Join(dst, rest))
-				}
+				// switch symlink component with its real path
+				path = switchSymlinkCom(path, start, link, after)
+
 				prev = 1
 				start = 1
 			} else {
@@ -101,6 +97,24 @@ func Realpath(fpath string) (string, error) {
 
 }
 
+// test if a link is symbolic link
+func isSymlink(fi os.FileInfo) bool {
+	return fi.Mode()&os.ModeSymlink == os.ModeSymlink
+}
+
+// switch a symbolic link component to its real path
+func switchSymlinkCom(path []byte, start int, link, after string) []byte {
+
+	if link[0] == os.PathSeparator {
+		// Absolute links
+		return []byte(filepath.Join(link, after))
+	}
+
+	// Relative links
+	return []byte(filepath.Join(string(path[0:start]), link, after))
+}
+
+// get the next component
 func nextComponent(path []byte, start int) []byte {
 	v := bytes.IndexByte(path[start:], os.PathSeparator)
 	if v < 0 {
