@@ -19,6 +19,7 @@ import (
 	"os"
 )
 
+// Realpath returns the real path of a given file in the os
 func Realpath(filepath string) (string, error) {
 
 	if len(filepath) == 0 {
