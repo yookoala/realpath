@@ -1,7 +1,7 @@
 realpath
 ========
 
-![Travis last test result on master](https://api.travis-ci.org/yookoala/realpath.svg?branch=master "Travis last test result on master")
+[![Travis last test result on master][travis-shield]][travis-link]
 
 This is a implementation of realpath() function in Go (golang).
 
@@ -11,6 +11,8 @@ with a string of its real absolute path in the system.
 The original version is created by Taru Karttunen in golang-nuts group. You
 may read [the original post about it](https://groups.google.com/forum/?fromgroups#!topic/golang-nuts/htns6YWMp7s).
 
+[travis-shield]: https://api.travis-ci.org/yookoala/realpath.svg?branch=master
+[travis-link]: https://travis-ci.org/yookoala/realpath?branch=master
 
 Installation
 ------------
