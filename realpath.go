@@ -18,7 +18,7 @@ func Realpath(fpath string) (string, error) {
 		return "", os.ErrInvalid
 	}
 
-	if fpath[0] != os.PathSeparator {
+	if !filepath.IsAbs(fpath) {
 		pwd, err := os.Getwd()
 		if err != nil {
 			return "", err
